@@ -1,0 +1,66 @@
+package practica;
+
+import javax.swing.JOptionPane;
+
+public class Practica {
+
+    public static void main(String[] args) {
+        // Crear una instancia de la clase Calculadora
+        Calculadora calcu = new Calculadora(JOptionPane.showInputDialog("Ingrese la marca"));
+        
+        int indice=0;
+        
+        do{
+            indice=Integer.parseInt(JOptionPane.showInputDialog("****MENU****\n"+
+                    "1)SUMAR\n2)RESTAR\n3)MULTIPLICAR\n4)DIVIDIR\n5)SUMAR UN NUMERO\n6)RESTAR UN NUMERO\n7)MULTIPLICAR UN NUMERO\n8)DIVIDIR UN NUMERO\n9)INFO\n0)SALIR"));
+            switch(indice){
+                case 1:
+                    int n1=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero 1"));
+                    int n2=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero 2"));
+                    calcu.suma(n1, n2);
+                    break;
+                case 2:
+                    n1=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero 1"));
+                    n2=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero 2"));
+                    calcu.resta(n1, n2);
+                    break;
+                case 3:
+                    n1=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero 1"));
+                    n2=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero 2"));
+                    calcu.multiplicacion(n1, n2);
+                    break;
+                case 4:
+                    n1=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero 1"));
+                    n2=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero 2"));
+                    calcu.division(n1, n2);
+                    break;
+                case 5:
+                    n1=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero"));
+                    calcu.suma(n1);
+                    break;
+                case 6:
+                    n1=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero"));
+                    calcu.resta(n1);
+                    break;
+                case 7:
+                    n1=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero"));
+                    calcu.multiplicacion(n1);
+                    break;
+                case 8:
+                    n1=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero"));
+                    calcu.division(n1);
+                    break;
+                case 9:
+                    JOptionPane.showMessageDialog(null,calcu.infoCalculadora());
+                    break;
+                case 0:
+                    JOptionPane.showMessageDialog(null, "Fin del Programa");
+                    break; 
+                default:
+                    JOptionPane.showMessageDialog(null, "Error: opcion "+indice+"no es valida");
+                    break;
+            }  
+        } while(indice!=0);
+
+    }
+}
