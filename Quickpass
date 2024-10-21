@@ -1,1 +1,20 @@
 
+                case 1:
+                    int n1=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero 1"));
+                    int n2=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero 2"));
+                    calcu.suma(n1, n2);
+                    break;
+                case 2:
+                    n1=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero 1"));
+                    n2=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero 2"));
+                    calcu.resta(n1, n2);
+                    break;
+                case 3:
+                    n1=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero 1"));
+                    n2=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero 2"));
+                    calcu.multiplicacion(n1, n2);
+                    break;
+                case 4:
+                    n1=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero 1"));
+                    n2=Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero 2"));
+                    calcu.division(n1, n2);
