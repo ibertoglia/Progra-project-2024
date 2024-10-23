@@ -1,1 +1,26 @@
+package proyecto_2024;
 
+public class QuickPass {
+    private String filial;
+    private String codigo;
+    private String placa;
+    private boolean activo;
+
+    // Constructor
+    public QuickPass(String filial, String codigo, String placa) {
+        this.filial = filial;
+        this.codigo = codigo;
+        this.placa = placa;
+        this.activo = true;
+    }
+
+    public String getFilial() { return filial; }
+    public String getCodigo() { return codigo; }
+    public String getPlaca() { return placa; }
+    public boolean isActivo() { return activo; }
+    public void setActivo(boolean activo) { this.activo = activo; }
+
+    public String toString() {
+        return "Filial: " + filial + ", Código: " + codigo + ", Placa: " + placa + ", Estado: " + (activo ? "Activo" : "Inactivo");
+    }
+}
