@@ -1,1 +1,107 @@
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
+// Clase Usuario
+class Usuario {
+    private String nombre;
+    private String tipo; // Propietario, Residente, Inquilino
+
+    public Usuario(String nombre, String tipo) {
+        this.nombre = nombre;
+        this.tipo = tipo;
+    }
+
+    // Getters
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+}
+
+// Clase Acceso
+class Acceso {
+    private Usuario usuario;
+    private LocalDateTime fechaHora;
+
+    public Acceso(Usuario usuario) {
+        this.usuario = usuario;
+        this.fechaHora = LocalDateTime.now();
+    }
+
+    // Getters
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public LocalDateTime getFechaHora() {
+        return fechaHora;
+    }
+}
+
+// Clase Menu
+public class Menu {
+    private List<Acceso> accesos = new ArrayList<>();
+    private Scanner scanner = new Scanner(System.in);
+
+    public void mostrarMenu() {
+        int opcion;
+        do {
+            System.out.println("\n--- Menú de Accesos del Condominio ---");
+            System.out.println("1. Registrar Acceso");
+            System.out.println("2. Mostrar Accesos");
+            System.out.println("3. Salir");
+            System.out.print("Seleccione una opción: ");
+            opcion = scanner.nextInt();
+            scanner.nextLine(); // Limpiar el buffer
+
+            switch (opcion) {
+                case 1:
+                    registrarAcceso();
+                    break;
+                case 2:
+                    mostrarAccesos();
+                    break;
+                case 3:
+                    System.out.println("Saliendo...");
+                    break;
+                default:
+                    System.out.println("Opción no válida. Intente de nuevo.");
+            }
+        } while (opcion != 3);
+    }
+
+    private void registrarAcceso() {
+        System.out.print("Ingrese el nombre del usuario: ");
+        String nombre = scanner.nextLine();
+        System.out.print("Ingrese el tipo de usuario (Propietario/Residente/Inquilino): ");
+        String tipo = scanner.nextLine();
+        
+        Usuario usuario = new Usuario(nombre, tipo);
+        Acceso acceso = new Acceso(usuario);
+        accesos.add(acceso);
+        System.out.println("Acceso registrado con éxito.");
+    }
+
+    private void mostrarAccesos() {
+        if (accesos.isEmpty()) {
+            System.out.println("No hay accesos registrados.");
+            return;
+        }
+        System.out.println("\n--- Lista de Accesos ---");
+        for (Acceso acceso : accesos) {
+            System.out.println("Usuario: " + acceso.getUsuario().getNombre() + 
+                               ", Tipo: " + acceso.getUsuario().getTipo() + 
+                               ", Fecha y Hora: " + acceso.getFechaHora());
+        }
+    }
+
+    public static void main(String[] args) {
+        Menu menu = new Menu();
+        menu.mostrarMenu();
+    }
+}v
