@@ -1,1 +1,115 @@
+import javax.swing.JOptionPane;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class SistemaAcceso {
+
+    public static void main(String[] args) {
+        String opcion;
+        
+        do {
+            opcion = JOptionPane.showInputDialog("Seleccione una opción:\n" +
+                                                 "1. Registrar acceso\n" +
+                                                 "2. Consultar historial de una filial\n" +
+                                                 "3. Consultar accesos en un rango de fechas\n" +
+                                                 "4. Consultar accesos de una placa\n" +
+                                                 "5. Salir");
+            switch (opcion) {
+                case "1":
+                    registrarAcceso();
+                    break;
+                case "2":
+                    consultarFilial();
+                    break;
+                case "3":
+                    consultarRangoFechas();
+                    break;
+                case "4":
+                    consultarPlaca();
+                    break;
+                case "5":
+                    JOptionPane.showMessageDialog(null, "Saliendo del sistema.");
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Opción no válida.");
+            }
+        } while (!opcion.equals("5"));
+    }
+
+    // Método para registrar un acceso
+    public static void registrarAcceso() {
+        String filial = JOptionPane.showInputDialog("Ingrese el nombre de la filial:");
+        String placa = JOptionPane.showInputDialog("Ingrese la placa del vehículo:");
+        String quickpass = JOptionPane.showInputDialog("Ingrese el código quickpass:");
+
+        String fechaHora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        String registro = "Filial: " + filial + ", Placa: " + placa + ", Quickpass: " + quickpass + ", Fecha y Hora: " + fechaHora;
+
+        // Guardar registro en archivo "Historial.txt"
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("Historial.txt", true))) {
+            writer.write(registro);
+            writer.newLine();
+            JOptionPane.showMessageDialog(null, "Acceso registrado correctamente.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al guardar el registro.");
+        }
+    }
+
+    // Método para consultar historial de una filial
+    public static void consultarFilial() {
+        String filial = JOptionPane.showInputDialog("Ingrese el nombre de la filial a consultar:");
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader("Historial.txt"))) {
+            StringBuilder resultados = new StringBuilder("Historial de la filial " + filial + ":\n");
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                if (linea.contains("Filial: " + filial)) {
+                    resultados.append(linea).append("\n");
+                }
+            }
+            JOptionPane.showMessageDialog(null, resultados.toString());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al leer el historial.");
+        }
+    }
+
+    // Método para consultar por rango de fechas
+    public static void consultarRangoFechas() {
+        String fechaInicio = JOptionPane.showInputDialog("Ingrese la fecha de inicio (yyyy-MM-dd):");
+        String fechaFin = JOptionPane.showInputDialog("Ingrese la fecha de fin (yyyy-MM-dd):");
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("Historial.txt"))) {
+            StringBuilder resultados = new StringBuilder("Accesos entre " + fechaInicio + " y " + fechaFin + ":\n");
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                String fecha = linea.split(", Fecha y Hora: ")[1].substring(0, 10);
+                if (fecha.compareTo(fechaInicio) >= 0 && fecha.compareTo(fechaFin) <= 0) {
+                    resultados.append(linea).append("\n");
+                }
+            }
+            JOptionPane.showMessageDialog(null, resultados.toString());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al leer el historial.");
+        }
+    }
+
+    // Método para consultar por placa
+    public static void consultarPlaca() {
+        String placa = JOptionPane.showInputDialog("Ingrese la placa a consultar:");
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("Historial.txt"))) {
+            StringBuilder resultados = new StringBuilder("Accesos de la placa " + placa + ":\n");
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                if (linea.contains("Placa: " + placa)) {
+                    resultados.append(linea).append("\n");
+                }
+            }
+            JOptionPane.showMessageDialog(null, resultados.toString());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al leer el historial.");
+        }
+    }
+}
 
