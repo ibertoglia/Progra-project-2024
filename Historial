@@ -1,8 +1,3 @@
-import javax.swing.JOptionPane;
-import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class SistemaAcceso {
 
     public static void main(String[] args) {
@@ -43,13 +38,13 @@ public class SistemaAcceso {
         String placa = JOptionPane.showInputDialog("Ingrese la placa del vehículo:");
         String quickpass = JOptionPane.showInputDialog("Ingrese el código quickpass:");
 
-        String fechaHora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        // Registra la fecha y hora como texto (simplemente pide al usuario)
+        String fechaHora = JOptionPane.showInputDialog("Ingrese la fecha y hora (yyyy-MM-dd HH:mm:ss):");
         String registro = "Filial: " + filial + ", Placa: " + placa + ", Quickpass: " + quickpass + ", Fecha y Hora: " + fechaHora;
 
         // Guardar registro en archivo "Historial.txt"
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("Historial.txt", true))) {
-            writer.write(registro);
-            writer.newLine();
+        try (FileWriter writer = new FileWriter("Historial.txt", true)) {
+            writer.write(registro + "\n");
             JOptionPane.showMessageDialog(null, "Acceso registrado correctamente.");
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al guardar el registro.");
@@ -60,12 +55,19 @@ public class SistemaAcceso {
     public static void consultarFilial() {
         String filial = JOptionPane.showInputDialog("Ingrese el nombre de la filial a consultar:");
         
-        try (BufferedReader reader = new BufferedReader(new FileReader("Historial.txt"))) {
+        try (FileReader reader = new FileReader("Historial.txt")) {
             StringBuilder resultados = new StringBuilder("Historial de la filial " + filial + ":\n");
-            String linea;
-            while ((linea = reader.readLine()) != null) {
-                if (linea.contains("Filial: " + filial)) {
-                    resultados.append(linea).append("\n");
+            int character;
+            StringBuilder line = new StringBuilder();
+
+            while ((character = reader.read()) != -1) {
+                if (character == '\n') {
+                    if (line.toString().contains("Filial: " + filial)) {
+                        resultados.append(line.toString()).append("\n");
+                    }
+                    line.setLength(0);  // Clear the line buffer
+                } else {
+                    line.append((char) character);
                 }
             }
             JOptionPane.showMessageDialog(null, resultados.toString());
@@ -79,13 +81,23 @@ public class SistemaAcceso {
         String fechaInicio = JOptionPane.showInputDialog("Ingrese la fecha de inicio (yyyy-MM-dd):");
         String fechaFin = JOptionPane.showInputDialog("Ingrese la fecha de fin (yyyy-MM-dd):");
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("Historial.txt"))) {
+        try (FileReader reader = new FileReader("Historial.txt")) {
             StringBuilder resultados = new StringBuilder("Accesos entre " + fechaInicio + " y " + fechaFin + ":\n");
-            String linea;
-            while ((linea = reader.readLine()) != null) {
-                String fecha = linea.split(", Fecha y Hora: ")[1].substring(0, 10);
-                if (fecha.compareTo(fechaInicio) >= 0 && fecha.compareTo(fechaFin) <= 0) {
-                    resultados.append(linea).append("\n");
+            int character;
+            StringBuilder line = new StringBuilder();
+
+            while ((character = reader.read()) != -1) {
+                if (character == '\n') {
+                    String lineStr = line.toString();
+                    if (lineStr.contains(", Fecha y Hora: ")) {
+                        String fecha = lineStr.split(", Fecha y Hora: ")[1].substring(0, 10);
+                        if (fecha.compareTo(fechaInicio) >= 0 && fecha.compareTo(fechaFin) <= 0) {
+                            resultados.append(lineStr).append("\n");
+                        }
+                    }
+                    line.setLength(0);
+                } else {
+                    line.append((char) character);
                 }
             }
             JOptionPane.showMessageDialog(null, resultados.toString());
@@ -98,12 +110,19 @@ public class SistemaAcceso {
     public static void consultarPlaca() {
         String placa = JOptionPane.showInputDialog("Ingrese la placa a consultar:");
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("Historial.txt"))) {
+        try (FileReader reader = new FileReader("Historial.txt")) {
             StringBuilder resultados = new StringBuilder("Accesos de la placa " + placa + ":\n");
-            String linea;
-            while ((linea = reader.readLine()) != null) {
-                if (linea.contains("Placa: " + placa)) {
-                    resultados.append(linea).append("\n");
+            int character;
+            StringBuilder line = new StringBuilder();
+
+            while ((character = reader.read()) != -1) {
+                if (character == '\n') {
+                    if (line.toString().contains("Placa: " + placa)) {
+                        resultados.append(line.toString()).append("\n");
+                    }
+                    line.setLength(0);  // Limpiar el buffer de línea
+                } else {
+                    line.append((char) character);
                 }
             }
             JOptionPane.showMessageDialog(null, resultados.toString());
@@ -112,4 +131,6 @@ public class SistemaAcceso {
         }
     }
 }
+
+
 
