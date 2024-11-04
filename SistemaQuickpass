@@ -1,1 +1,93 @@
+ public void  registrarAcceso(){//int filial, int placa, int quickpass
+        
+        
+        String placa = JOptionPane.showInputDialog("Placa del vehiculo:");
+        String filial = JOptionPane.showInputDialog("Nombre filial");
+        String quickpass = JOptionPane.showInputDialog("Codigo quickpass:");
+        String fechaHora = new SimpleDateFormat("dia-mes-año : minutos, horaa").format(new Date());
+        String registro = ", placa: " +  "filial: " + filial + placa + ", quickpass: " + quickpass + ", fecha hora: " + fechaHora;
 
+        
+        
+    }
+    //FUNCION 2
+    public String consultarFilial(){
+        
+         String filial = JOptionPane.showInputDialog("Nombre de la filial");
+        
+        try (BufferedReader buscar = new BufferedReader(new FileReader("Rejistro"))) {
+            StringBuilder encontrado = new StringBuilder("rejistro de la filial " + filial);
+            String linea;
+            while ((linea = buscar.readLine()) != null) {
+                if (linea.contains("Filial " + filial)) {
+                    encontrado.append(linea).append("\n");
+                }
+            }
+            JOptionPane.showMessageDialog(null, encontrado.toString());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al leer el historial");
+        }
+        
+        
+       
+    }
+    //FUNCION 3
+    public String consultarRangoFechas(){
+        
+         String fechaInicio = JOptionPane.showInputDialog("Ingrese la fecha de inicio (dia-mes-año):");
+        String fechaFin = JOptionPane.showInputDialog("Ingrese la fecha (dia-mes-año):");
+        try (BufferedReader reader = new BufferedReader(new FileReader("Historial.txt"))) {
+            StringBuilder resultados = new StringBuilder("Accesos entre " + fechaInicio + " y " + fechaFin + ":\n");
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                String fecha = linea.split("Fecha y Hora ")[1].substring(0, 10);
+                if (fecha.compareTo(fechaInicio) >= 0 && fecha.compareTo(fechaFin) <= 0) {
+                    resultados.append(linea).append("\n");
+                }
+            }
+            JOptionPane.showMessageDialog(null, resultados.toString());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al leer el historial ");
+        }
+        
+        
+      
+    }
+    //FUNCION 4
+    public String consultarPlaca(){
+        
+         String placa = JOptionPane.showInputDialog("placa del veiculo");
+        try (BufferedReader reader = new BufferedReader(new FileReader("Historial.txt"))) {
+            StringBuilder resultados = new StringBuilder("placa " + placa + ":\n");
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                if (linea.contains("Placa: " + placa)) {
+                    resultados.append(linea).append("\n");
+                }
+            }
+            JOptionPane.showMessageDialog(null, resultados.toString());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al leer el historial.");
+        }
+        
+        
+       
+    }
+     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    }
+}//Fin clase
